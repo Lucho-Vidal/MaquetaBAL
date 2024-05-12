@@ -5,3 +5,6 @@ Simulación del sistema BAL
 "SPACE" para activar o desactivar el avance automático
 "m" para avanzar
 "n" para retroceder
+
+pages:
+https://lucho-vidal.github.io/MaquetaBAL/
