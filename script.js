@@ -1,18 +1,18 @@
 
-/*  
-ctx.strokeRect(x,y,width,height) // dibuja un rectángulo
-ctx.fillRect(x,y,width,height) // dibuja un rectángulo relleno
-ctx.fillStyle = '#d30f0e' // el color  rojo
+// /*  
+// ctx.strokeRect(x,y,width,height) // dibuja un rectángulo
+// ctx.fillRect(x,y,width,height) // dibuja un rectángulo relleno
+// ctx.fillStyle = '#d30f0e' // el color  rojo
 
-ctx.lineTo(x,y)
-ctx.closePath() // cierra el dibujo
-ctx.fillStyle = '#f4c521' // el color amarillo
-ctx.fill()
-ctx.stroke() //dibuja lineTo
+// ctx.lineTo(x,y)
+// ctx.closePath() // cierra el dibujo
+// ctx.fillStyle = '#f4c521' // el color amarillo
+// ctx.fill()
+// ctx.stroke() //dibuja lineTo
 
-ctx.beginPath() // levanta el lápiz
-*/
-// setInterval(mostrarLuz, 2000);
+// ctx.beginPath() // levanta el lápiz
+// */
+// // setInterval(mostrarLuz, 2000);
 
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
@@ -30,7 +30,7 @@ const signal = () => {
                 secuencia--; // Disminuimos secuencia en cada iteración
                 if (secuencia < 1) break; // Aseguramos que no sea menor que 1
             }
-            break;
+            // break;
         }
     }
 }
@@ -178,7 +178,7 @@ function Circuito({x = 0,y = 0,ocupado = false,width = 265}){
 }
 
 //instancias
-const CANTIDAD = 20
+const CANTIDAD = 10
 
 const semaforos = [];
 const circuitos = [];
@@ -198,12 +198,25 @@ for (let i = 0; i < CANTIDAD; i++) {
 
 
 dibujar()
-const moverseDerecha = () =>{
-        circuitos[aux].setOcupado(false)
-        aux =  aux < CANTIDAD ? aux + 1: 0;
-        circuitos[aux].setOcupado(true)
-        signal()
-        dibujar()
+const moverseDerecha = () => {
+    // Calcular el próximo índice
+    const nextAux = aux < CANTIDAD - 1 ? aux + 1 : 0;
+
+    // Ocupar el nuevo circuito
+    circuitos[nextAux].setOcupado(true);
+    
+    // Llamar a signal y dibujar
+    signal();
+    dibujar();
+
+    // Desocupar el circuito actual después de un retraso
+    setTimeout(() => {
+        circuitos[aux].setOcupado(false);
+        signal();
+        dibujar();
+        aux = nextAux; // Actualizar 'aux' al nuevo índice ocupado
+    }, 2000); // Desocupa el circuito después de 1 segundo
+
 }
 const moverseIzquierda = () =>{
         circuitos[aux].setOcupado(false)
@@ -215,9 +228,10 @@ const moverseIzquierda = () =>{
 }
 //eventos
 let aux = CANTIDAD
-let intervaloActivo = false;
-let intervalo;
+let intervaloActivo = true;
+let intervalo = setInterval(moverseDerecha, 5000);
 const h2Intervalo = document.getElementById('intervalo');
+h2Intervalo.style.display = 'block';
 document.addEventListener('keydown', function(event) {
     if (event.key === 'm') {
         moverseDerecha()
@@ -228,7 +242,7 @@ document.addEventListener('keydown', function(event) {
     
     if (event.key === ' ') { 
         if (!intervaloActivo) {
-            intervalo = setInterval(moverseDerecha, 2000);
+            intervalo = setInterval(moverseDerecha, 5000);
             intervaloActivo = true;
             h2Intervalo.style.display = 'block'; // Mostrar el elemento h2
             console.log('Intervalo activado');
@@ -240,8 +254,4 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
-
-
-
-    
 
