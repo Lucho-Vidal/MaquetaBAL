@@ -11,6 +11,7 @@ body{
     background-color: #123535;
 }
 canvas {
+    margin-left: 20px;
     background-color: #bfbfbf;
 }
 h1, h2{
